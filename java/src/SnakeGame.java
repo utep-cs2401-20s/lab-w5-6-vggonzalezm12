@@ -34,7 +34,7 @@ public class SnakeGame
                 if(board [i][j] == true)
                 {
                     tailLength++;
-                    if (hold == 1)
+                    if (hold == 1 && i != headPosition[0] && j!= headPosition[1])
                     {
                         tailPosition = new int [i, j, tailLength];
                         return tailPosition; // return and array of length [3] 1) tail position -- x,y 3) tailLength
