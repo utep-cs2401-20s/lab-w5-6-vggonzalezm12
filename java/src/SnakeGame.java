@@ -21,7 +21,7 @@ public class SnakeGame
     {
 
         // RESET THE COUNTER
-        exhaustiveCheck = 0;
+        resetCounters();
 
         // need to look at the current position (0,0) then neighbors if it is part of the snake,if it is not move to the next cell
         // not to be the head (1 neighbor)
@@ -59,10 +59,8 @@ public class SnakeGame
 
     public int[] findTailRecursive()
     {
-
-        // RESET THE COUNTER
-        recursiveChecks= 0;
-
+        // reset counter
+        resetCounters();
         // Find the Head position
 
         for (int row = 0; row < game.length; row++) // rows
@@ -72,20 +70,104 @@ public class SnakeGame
                 if (row == headPosition[0] && col == headPosition[1])
                 {
                     // start looking for the snake (true ones)
-                    int [] currentPosition = new int [2];
-                    currentPosition[0]= headPosition[0];
-                    currentPosition [1] = headPosition [1];
+                    findTailRecursive(headPosition,headPosition);
                 }
             }
 
         }
         // NEIGHBORS AND MAKE SURE THE NEIGHBOR IS NOT THE ONE WE CAME FROM
-        //
 
     }
 
-    private int[] findTailRecursive (int[] currentPosition, int[] previousPosition)
+    private int[] findTailRecursive (int [] currentPosition, int [] previousPosition)
     {
+
+        int snakeLength = 0;
+        int [] tailPosition = new int [3];
+
+        /* char right = game[row][col + 1];
+        char left = game[row][col - 1];
+        char up = game[row - 1][col];
+        char down = game [row + 1][col]; */
+
+        int row = currentPosition[0];
+        int col = currentPosition[1];
+        int prevRow = previousPosition[0];
+        int prevCol = previousPosition[1];
+
+        int [] newPosition = new int[2];
+
+        if ((row != prevRow) || (col+1 != prevCol))
+        {
+            if (game[row][col+1])
+            {
+                snakeLength++;
+                newPosition[0] = row;
+                newPosition[1] = col+1;
+                findTailRecursive(newPosition, currentPosition);
+            }
+            else
+            {
+                tailPosition[0] = row;
+                tailPosition[1] = col;
+                return tailPosition;
+            }
+
+        }
+
+        if ((row != prevRow || col -1!= prevCol))
+        {
+            if (game[row][col-1])
+            {
+                snakeLength++;
+                newPosition[0] = row;
+                newPosition[1] = col - 1;
+                findTailRecursive(newPosition, currentPosition);
+            }
+            else
+            {
+                tailPosition[0] = row;
+                tailPosition[1] = col;
+                return tailPosition;
+            }
+        }
+
+        if ((row - 1 != prevRow || col != prevCol))
+        {
+            if (game[row-1][col])
+            {
+                snakeLength++;
+                newPosition[0] = row-1;
+                newPosition[1] = col;
+                findTailRecursive(newPosition, currentPosition);
+            }
+            else
+            {
+                tailPosition[0] = row;
+                tailPosition[1] = col;
+                return tailPosition;
+            }
+        }
+
+        if ((row +1 != prevRow || col != prevCol))
+        {
+            if (game[row+1][col])
+            {
+                snakeLength++;
+                newPosition[0] = row+1;
+                newPosition[1] = col;
+                findTailRecursive(newPosition, currentPosition);
+            }
+            else
+                {
+                    tailPosition[0] = row;
+                    tailPosition[1] = col;
+                    return tailPosition;
+                }
+        }
+
+
+
 
     }
     public int neighbors( int row, int col)
@@ -108,5 +190,12 @@ public class SnakeGame
             countSnake++;
 
         return countSnake;
+    }
+
+    private void resetCounters()
+    {
+        exhaustiveCheck = 0;
+        recursiveChecks = 0;
+
     }
 }
