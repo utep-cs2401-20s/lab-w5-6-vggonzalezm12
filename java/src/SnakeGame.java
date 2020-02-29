@@ -150,6 +150,7 @@ public class SnakeGame
 
         }
 
+        
         if((row +1 != prevRow || col != prevCol))
         {
             if (game[row+1][col])
